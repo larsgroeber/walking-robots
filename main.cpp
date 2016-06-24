@@ -126,8 +126,8 @@ public:
     Primitive* trunk = dog->getMainPrimitive();
     
     // uncomment to hold dog above the ground
-    //fixator = new FixedJoint(trunk, global.environment);
-    //fixator->init(odeHandle, osgHandle);
+    fixator = new FixedJoint(trunk, global.environment);
+    fixator->init(odeHandle, osgHandle);
 
     // create pointer to controller
 

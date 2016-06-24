@@ -61,11 +61,11 @@ namespace lpzrobots {
       c.legLength          = 0.6;
       c.mass               = 1;
       c.relLegmass         = 1;
-      c.powerFactor        = 1;
+      c.powerFactor        = 2;
       c.dampingFactor      = 1;
-      c.hipPower           = 2; //3;
+      c.hipPower           = 3; //3;
       c.hipDamping         = 0.1;
-      c.kneePower          = 1; //2;
+      c.kneePower          = 2; //2;
       c.kneeDamping        = 0.05;
       c.anklePower         = 0.1; //5;
       c.ankleDamping       = 0.02;

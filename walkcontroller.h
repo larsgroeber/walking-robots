@@ -22,6 +22,15 @@ public:
   virtual void stepNoLearning(const sensor* , int number_sensors,
                               motor* , int number_motors);
 
+  //// Custom ////
+  void forwardSensor(const sensor* sensors, int sensornumber,
+                          motor* motors, int motornumber, Neural_Custom* neural);
+  double calFitness(double posNow[3]);
+  void startNextGen();
+
+
+  //// End Custom ////
+
   virtual std::list<iparamkey> getInternalParamNames()const  { return std::list<iparamkey>(); }
 
   virtual std::list<iparamval> getInternalParams() const { return std::list<iparamval>(); }
@@ -49,15 +58,32 @@ protected:
 
 
   //// Neural Network ////
-  Neural_Custom neural;
-  mat input = mat(1,12);
-  mat output = mat(1,12);
+  int inputSize = 0 + 1;
+  int outputSize = 10;
+  int numberOfNeurons = 5;
+  int maxTime = 1000;
+  
+  int numberOfNetworks = 2;     // number of networks to be used per generation
+  int numberOfGenerations = 2;  // number of generations to run through
+  int generation = 1;
+  int curNetID = 0;
+
+
+  std::vector<Neural_Custom*> networkList;
+  std::vector<Neural_Custom*> nextNetworkList;
+
+  //// End Network ////
+
+
+
+  mat input = mat(1,inputSize);
+  mat output = mat(1,outputSize);
 
   double startPos[3];   // array holding the starting position of the robot
   double posArray[3];   // array holding the current position of the robot
 
   paramval speed;
-  paramval phase;
+  paramval sinMod;
   paramval kneeamplitude;
   paramval hipamplitude;
 };

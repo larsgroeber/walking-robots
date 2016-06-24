@@ -3,7 +3,7 @@
 
 // include primitives (box, spheres, cylinders ...)
 #include <ode_robots/primitive.h>
-#include <ode_robots/relativepositionsensor.h>
+
 
 // include joints
 #include <ode_robots/joint.h>
