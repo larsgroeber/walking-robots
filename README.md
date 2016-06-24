@@ -1,6 +1,6 @@
 # vierbeiner-robot
 
-Robot-project for the course [Selforganisation](http://itp.uni-frankfurt.de/~gros/Vorlesungen/SO/) at the Goethe University in Frankfurt aiming to teach a robot how to walk.
+Robot-project for the course [Self-Organization: Theory and Simulations](http://itp.uni-frankfurt.de/~gros/Vorlesungen/SO/) at the Goethe University in Frankfurt aiming to teach a robot how to walk.
 
 This project uses the [LpzRobots-Package](http://robot.informatik.uni-leipzig.de/software/).
 
