@@ -41,17 +41,22 @@ void WalkController::step(const sensor* sensors, int sensornumber,
                      6,7,8,9 : knee: rh, lh, rf, lf
                      10,11   : ankle rh, lh
    */
+  for (int i = 0; i < 3; ++i)
+  {
+    posArray[i] = sensors[12+i];
+  }
+
 
   for (int i = 0; i < 12; ++i)
   {
-    input(0,i) = motors[i];
+    input(0,i) = sensors[i];
   }
 
   output = neural.forward(input);
 
   for (int i = 0; i < 12; ++i)
   {
-    motors[i] = output(0,i);
+    motors[i] = 2 * output(0,i) - 1;
   }
 
 };

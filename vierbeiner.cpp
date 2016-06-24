@@ -89,7 +89,7 @@ namespace lpzrobots {
   };
 
   int VierBeiner::getSensorNumberIntern(){
-    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 1;
+    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 3; // 3 Position sensors
   };
 
   /* returns actual sensorvalues
@@ -116,7 +116,13 @@ namespace lpzrobots {
       sensors[n]   = (*s)->get();
       n++;
     }
-      sensors[n] = 
+      Position position = this->getPosition();
+      const double* posArray = position.toArray();
+      for (int i = 0; i < 3; ++i)
+      {
+        sensors[n] = posArray[i];
+        n++;
+      }
     assert(min(sensornumber, getSensorNumberIntern())==n);
     return n;
   };
@@ -177,8 +183,6 @@ namespace lpzrobots {
     }else{
       trunk = new Box(conf.size, twidth, theight);
     }
-
-    relPosSensor.init(trunk);
 
     trunk->setTexture("Images/toy_fur3.jpg");
     trunk->init(odeHandle, conf.mass*0.8, osgHandle);

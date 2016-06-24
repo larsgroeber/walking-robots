@@ -47,9 +47,14 @@ protected:
   int number_sensors;
   int number_motors;
 
+
+  //// Neural Network ////
   Neural_Custom neural;
   mat input = mat(1,12);
   mat output = mat(1,12);
+
+  double startPos[3];   // array holding the starting position of the robot
+  double posArray[3];   // array holding the current position of the robot
 
   paramval speed;
   paramval phase;

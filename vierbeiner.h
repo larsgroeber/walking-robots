@@ -151,8 +151,6 @@ namespace lpzrobots {
     std::vector <OneAxisServo*> ankleservos; // motors
     std::vector <OneAxisServo*> headtailservos; // motors
 
-    RelativePositionSensor relPosSensor;
-
     std::list <Primitive*> legparts; // lower leg parts (lower legs and feet) if collisions are ignored
 
   };

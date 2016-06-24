@@ -72,8 +72,7 @@ public:
             }
         }
 
-        //outputVec = normalise(outputVec, 2, 1);
-        outputVec.print();    
+        //outputVec = normalise(outputVec, 2, 1)  
         return outputVec;
     }
 
