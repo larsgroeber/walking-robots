@@ -136,7 +136,10 @@ public:
     //cc.useS=false;
     //AbstractController *controller = new InvertMotorNStep(cc);
 
+    
     AbstractController *controller = new WalkController();
+    //controller->init(12,12);
+    
 
     // AbstractController* controller = new SineController();
 
@@ -183,20 +186,23 @@ public:
   }
 
 
-  // virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control) {
-  //   if(control && !pause && teachcontroller){
-  //     double sensors[12];
-  //     double motors[12];
-  //     AbstractController* contr = globalData.agents.front()->getController();
-  //     InvertMotorNStep* c = dynamic_cast<InvertMotorNStep*>(contr);
-  //     if(c){
-  //       //int len = c->getSensorNumber();
-  //       //teachcontroller->step(sensors, len, motors, len);
-  //       //c->setMotorTeachingSignal(motors,len);
-  //     }
-  //   }
+  virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control) {
 
-  // }
+
+
+    // if(control && !pause && teachcontroller){
+    //   double sensors[12];
+    //   double motors[12];
+    //   AbstractController* contr = globalData.agents.front()->getController();
+    //   InvertMotorNStep* c = dynamic_cast<InvertMotorNStep*>(contr);
+    //   if(c){
+    //     //int len = c->getSensorNumber();
+    //     //teachcontroller->step(sensors, len, motors, len);
+    //     //c->setMotorTeachingSignal(motors,len);
+    //   }
+    // }
+
+  }
 
   // add own key handling stuff here, just insert some case values
   virtual bool command(const OdeHandle&, const OsgHandle&, GlobalData& globalData, int key, bool down)

@@ -3,6 +3,7 @@
 #include "class.simpleNeuralNetwork.h"
 
 
+
 #include <stdio.h>
 #include <selforg/abstractcontroller.h>
 
@@ -23,6 +24,7 @@ public:
                               motor* , int number_motors);
 
   //// Custom ////
+  void setRobot();
   void forwardSensor(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber, Neural_Custom* neural);
   double calFitness(double posNow[3]);
@@ -61,10 +63,10 @@ protected:
   int inputSize = 0 + 1;
   int outputSize = 10;
   int numberOfNeurons = 5;
-  int maxTime = 1000;
+  int maxTime = 500;
   
-  int numberOfNetworks = 2;     // number of networks to be used per generation
-  int numberOfGenerations = 2;  // number of generations to run through
+  int numberOfNetworks = 3;     // number of networks to be used per generation
+  int numberOfGenerations = 5;  // number of generations to run through
   int generation = 1;
   int curNetID = 0;
 

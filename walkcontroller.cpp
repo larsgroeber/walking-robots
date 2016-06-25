@@ -12,8 +12,8 @@ using namespace arma;
 WalkController::WalkController()
   : AbstractController("walkcontroller", "$Id$"){
   t=0;
-  addParameterDef("speed",&speed, 10.0);
-  addParameterDef("sinMod",&sinMod, 2);
+  addParameterDef("speed",&speed, 30.0);
+  addParameterDef("sinMod",&sinMod, 5);
   addParameterDef("hipampl",&hipamplitude, 0.8);
   addParameterDef("kneeampl",&kneeamplitude, 0.8);
 
@@ -41,6 +41,10 @@ void WalkController::init(int sensornumber, int motornumber, RandGen* randGen){
   }  
 };
 
+void WalkController::setRobot(){
+  
+};
+
 void WalkController::step(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber) {
   /** sensors/motors: 0: neck, 1: tail
@@ -49,16 +53,11 @@ void WalkController::step(const sensor* sensors, int sensornumber,
                      10,11   : ankle rh, lh
    */
   // get starting position
-  for (int i = 0; i < 13; ++i)
-  {
-    cout << sensors[i] << "  ";
-  }
-  cout << endl;
-  //const double* pos = sensors[12].toArray();
-  if (t==0)
-    for (int i = 0; i < 3; ++i) {
-      startPos[i] = sensors[12+i]; 
+  assert(sensornumber == 12+3);
 
+  if (t==2)
+    for (int i = 0; i < 3; ++i) {
+      startPos[i] = sensors[12+i];
     }
   else // get current position
     for (int i = 0; i < 3; ++i) {
@@ -75,7 +74,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
     
     // calculate current fitness of the network
-    curNet->setFitness(max(curNet->getFitness(), calFitness(posArray)));
+    curNet->setFitness(t>2 ? max(curNet->getFitness(), calFitness(posArray)) : 0);
 
     t++;  // step time forward
   }
@@ -88,6 +87,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
       
     }
     else if (generation < numberOfGenerations){
+      cout << "Generation " << generation << " completed." << endl << endl;
       curNetID = 0; 
       startNextGen();   // breed new generation of networks
     }
@@ -98,11 +98,6 @@ void WalkController::step(const sensor* sensors, int sensornumber,
 
 
     t = 0;
-  }
-
-  for (int i = 0; i < 12; ++i)
-  {
-    motors[i] = 0;
   }
 
   
@@ -119,6 +114,8 @@ double WalkController::calFitness(double posNow[3]) {
 }
 
 void WalkController::startNextGen() {
+  nextNetworkList.erase(nextNetworkList.begin(), nextNetworkList.end());
+
   // first calculate sum of all fitnesses
   double totalFitness = 0;
   for (unsigned int i = 0; i < networkList.size(); ++i)

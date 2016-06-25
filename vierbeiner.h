@@ -139,6 +139,7 @@ namespace lpzrobots {
 
     bool created;      // true if robot was created
 
+    sensor* sensors;
 
     // some objects explicitly needed for ignored collision pairs
     Primitive *trunk, *headtrans, *bigboxtransform, *neck, *tail;

@@ -91,7 +91,7 @@ namespace lpzrobots {
   };
 
   int VierBeiner::getSensorNumberIntern(){
-    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 1; // 3 Position sensors
+    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 3; // 3 Position sensors
   };
 
   /* returns actual sensorvalues
@@ -118,16 +118,17 @@ namespace lpzrobots {
       sensors[n]   = (*s)->get();
       n++;
     }
-      sensors[n] = 0;//new this->getPosition();
-      // const double* posArray = position.toArray();
-      // for (int i = 0; i < 3; ++i)
-      // {
-      //   sensors[n] = posArray[i];
-      //   n++;
-      // }
-      // cout << sensors[12] << endl;
-      n++;
+      Position position = this->getPosition();
+      const double* posArray = position.toArray();
+      for (int i = 0; i < 3; ++i)
+      {
+        sensors[n] = posArray[i];
+        n++;
+      }
+      
+      
     assert(min(sensornumber, getSensorNumberIntern())==n);
+    
     return n;
   };
 
@@ -163,6 +164,7 @@ namespace lpzrobots {
       @param global structure that contains global data from the simulation environment
   */
   void VierBeiner::doInternalStuff(GlobalData& global){
+    
   }
 
   /** creates vehicle at desired position
