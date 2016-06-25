@@ -49,6 +49,12 @@ void WalkController::step(const sensor* sensors, int sensornumber,
                      10,11   : ankle rh, lh
    */
   // get starting position
+  for (int i = 0; i < 13; ++i)
+  {
+    cout << sensors[i] << "  ";
+  }
+  cout << endl;
+  //const double* pos = sensors[12].toArray();
   if (t==0)
     for (int i = 0; i < 3; ++i) {
       startPos[i] = sensors[12+i]; 
@@ -57,7 +63,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
   else // get current position
     for (int i = 0; i < 3; ++i) {
       posArray[i] = sensors[12+i];
-      cout << posArray[i] << endl;
+      //cout << posArray[i] << endl;
     }
 
 
@@ -94,7 +100,10 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     t = 0;
   }
 
-  
+  for (int i = 0; i < 12; ++i)
+  {
+    motors[i] = 0;
+  }
 
   
 };

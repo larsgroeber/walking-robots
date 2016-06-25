@@ -4,6 +4,8 @@
 // include primitives (box, spheres, cylinders ...)
 #include <ode_robots/primitive.h>
 
+#include <ode_robots/oderobot.h>
+
 
 // include joints
 #include <ode_robots/joint.h>
@@ -66,7 +68,7 @@ namespace lpzrobots {
       n++;
     }
     FOREACH(vector <HingeServo*>, hipservos, s){
-      (*s)->set(motors[n]);
+      (*s)->set(0);//motors[n]);
       n++;
     }
     FOREACH(vector <HingeServo*>, kneeservos, s){
@@ -89,7 +91,7 @@ namespace lpzrobots {
   };
 
   int VierBeiner::getSensorNumberIntern(){
-    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 3; // 3 Position sensors
+    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 1; // 3 Position sensors
   };
 
   /* returns actual sensorvalues
@@ -116,13 +118,15 @@ namespace lpzrobots {
       sensors[n]   = (*s)->get();
       n++;
     }
-      Position position = this->getPosition();
-      const double* posArray = position.toArray();
-      for (int i = 0; i < 3; ++i)
-      {
-        sensors[n] = posArray[i];
-        n++;
-      }
+      sensors[n] = 0;//new this->getPosition();
+      // const double* posArray = position.toArray();
+      // for (int i = 0; i < 3; ++i)
+      // {
+      //   sensors[n] = posArray[i];
+      //   n++;
+      // }
+      // cout << sensors[12] << endl;
+      n++;
     assert(min(sensornumber, getSensorNumberIntern())==n);
     return n;
   };

@@ -96,18 +96,18 @@ public:
     global.obstacles.push_back(playground);
 
 
-    // add passive spheres as obstacles
-    for (int i=0; i< 0/*2*/; i+=2){
-      PassiveSphere* s1 = new PassiveSphere(odeHandle, osgHandle, 0.3);
-      // s1->setPosition(osg::Vec3(-4.5+i*4.5,0,0));
-      s1->setPosition(osg::Vec3(0,0,10+i*5));
-      s1->setTexture("Images/dusty.rgb");
-      global.obstacles.push_back(s1);
-    }
+    // // add passive spheres as obstacles
+    // for (int i=0; i< 0/*2*/; i+=2){
+    //   PassiveSphere* s1 = new PassiveSphere(odeHandle, osgHandle, 0.3);
+    //   // s1->setPosition(osg::Vec3(-4.5+i*4.5,0,0));
+    //   s1->setPosition(osg::Vec3(0,0,10+i*5));
+    //   s1->setTexture("Images/dusty.rgb");
+    //   global.obstacles.push_back(s1);
+    // }
 
 
-    teachcontroller = new WalkController();
-    teachcontroller->init(12,12);
+    //teachcontroller = new WalkController();
+    //teachcontroller->init(12,12);
     for (int i=0; i< 1/*2*/; i++){ //Several dogs
 
     VierBeinerConf conf = VierBeiner::getDefaultConf();
@@ -132,8 +132,8 @@ public:
     // create pointer to controller
 
 
-    InvertMotorNStepConf cc = InvertMotorNStep::getDefaultConf();
-    cc.useS=false;
+    //InvertMotorNStepConf cc = InvertMotorNStep::getDefaultConf();
+    //cc.useS=false;
     //AbstractController *controller = new InvertMotorNStep(cc);
 
     AbstractController *controller = new WalkController();
@@ -160,7 +160,7 @@ public:
     global.configs.push_back(controller);
 
     // create pointer to one2onewiring
-    AbstractWiring* wiring = new One2OneWiring(new ColorUniformNoise(0.1));
+    AbstractWiring* wiring = new One2OneWiring(new ColorUniformNoise(0));
     // feedback connection and blind channels
     // AbstractWiring* wiring =
     //       new WiringSequence(new FeedbackWiring(new ColorUniformNoise(0.1),
@@ -183,20 +183,20 @@ public:
   }
 
 
-  virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control) {
-    if(control && !pause && teachcontroller){
-      double sensors[12];
-      double motors[12];
-      AbstractController* contr = globalData.agents.front()->getController();
-      InvertMotorNStep* c = dynamic_cast<InvertMotorNStep*>(contr);
-      if(c){
-        int len = c->getSensorNumber();
-        teachcontroller->step(sensors, len, motors, len);
-        c->setMotorTeachingSignal(motors,len);
-      }
-    }
+  // virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control) {
+  //   if(control && !pause && teachcontroller){
+  //     double sensors[12];
+  //     double motors[12];
+  //     AbstractController* contr = globalData.agents.front()->getController();
+  //     InvertMotorNStep* c = dynamic_cast<InvertMotorNStep*>(contr);
+  //     if(c){
+  //       //int len = c->getSensorNumber();
+  //       //teachcontroller->step(sensors, len, motors, len);
+  //       //c->setMotorTeachingSignal(motors,len);
+  //     }
+  //   }
 
-  }
+  // }
 
   // add own key handling stuff here, just insert some case values
   virtual bool command(const OdeHandle&, const OsgHandle&, GlobalData& globalData, int key, bool down)
