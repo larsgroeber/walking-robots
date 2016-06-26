@@ -22,8 +22,8 @@ protected:
     int outputSize;
     int numberOfNeurons;
 
-    double randomWeightsRange = 1;
-    double chanceOfZero = 0.2;    
+    double randomWeightsRange = 4;
+    double chanceOfZero = 0.1;    
 
     mat outputVec;
     mat inputVec;
@@ -66,7 +66,7 @@ public:
 
         for (int i = 0; i < inputVec.n_rows; ++i) {           // applying sigmoid function to every output
             for (int j = 0; j < outputSize; ++j) {
-                //sigmoid(outputVec(i,j));
+                sigmoid(outputVec(i,j));
             }
         }
 
@@ -98,11 +98,11 @@ public:
 
         for (int i = 0; i < inputWeights.n_rows; ++i) 
             for (int j = 0; j < inputWeights.n_cols; ++j) 
-                inputWeights(i,j) = ((double)rand() / INT_MAX) < 1 - chanceOfZero ? (double)rand() / (INT_MAX / 2*randomWeightsRange) -randomWeightsRange : 0;    
+                inputWeights(i,j) = ((double)rand() / INT_MAX) < 1 - chanceOfZero ? 2*(double)rand() / INT_MAX * randomWeightsRange -randomWeightsRange : 0;    
 
         for (int i = 0; i < outputWeights.n_rows; ++i) 
             for (int j = 0; j < outputWeights.n_cols; ++j) 
-                outputWeights(i,j) = ((double)rand() / INT_MAX) < 1 - chanceOfZero ? (double)rand() / (INT_MAX / 2*randomWeightsRange) -randomWeightsRange : 0;
+                outputWeights(i,j) = ((double)rand() / INT_MAX) < 1 - chanceOfZero ? 2*(double)rand() / INT_MAX * randomWeightsRange -randomWeightsRange : 0;
         inputWeights.print();
     }
 
@@ -126,7 +126,7 @@ class Neural_Custom: public Neural_Network {
 protected:
     double fitness = 0;
 
-    double chanceOfMutate = 0.01;
+    double chanceOfMutate = 0.05;
     double maxMutate = 2;
 
 public:

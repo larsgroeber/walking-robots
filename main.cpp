@@ -55,6 +55,8 @@ public:
   double hardness;
   Substance s;
   AbstractController *teachcontroller;
+  VierBeiner* dog;
+  AbstractController *controller;
 
   // starting function (executed once at the beginning of the simulation loop)
   void start(const OdeHandle& odeHandle, const OsgHandle& osgHandle, GlobalData& global)
@@ -67,12 +69,12 @@ public:
     global.odeConfig.setParam("controlinterval",2);
     global.odeConfig.setParam("noise",0);
     global.odeConfig.setParam("realtimefactor",1);
-    global.odeConfig.setParam("gravity", -3);
+    global.odeConfig.setParam("gravity", -4);
     //    global.odeConfig.setParam("cameraspeed", 250);
     //  int chessTexture = dsRegisterTexture("chess.ppm");
 
     // use Playground as boundary:
-    s.toPlastic(0.9);
+    s.toRubber(50);
     double scale = 20;
     double height = 0;
     int anzgrounds=1;
@@ -83,7 +85,7 @@ public:
       playground = new Playground(odeHandle, osgHandle,
              osg::Vec3((4+4*i)*scale, .2, (.15+0.15*i)*height), 1, i==(anzgrounds-1));
       OdeHandle myhandle = odeHandle;
-      myhandle.substance.toFoam(10);
+      //myhandle.substance.toFoam(10);
       // playground = new Playground(myhandle, osgHandle, osg::Vec3(/*base length=*/50.5,/*wall = */.1, /*height=*/1));
       playground->setColor(Color(1,1,0,0.5f));
       //      playground->setColor(Color((i & 1) == 0,(i & 2) == 0,(i & 3) == 0,0.3f));
@@ -118,7 +120,7 @@ public:
 
     OdeHandle doghandle = odeHandle;
     doghandle.substance.toRubber(10);
-    VierBeiner* dog = new VierBeiner(doghandle, osgHandle,conf, "Dog");
+    dog = new VierBeiner(doghandle, osgHandle,conf, "Dog");
     //dog->place(osg::Matrix::translate(0,0,0.15));
     dog->place(osg::Matrix::translate(0,0,.5 + 4*i));
     global.configs.push_back(dog);
@@ -126,8 +128,8 @@ public:
     Primitive* trunk = dog->getMainPrimitive();
     
     // uncomment to hold dog above the ground
-    fixator = new FixedJoint(trunk, global.environment);
-    fixator->init(odeHandle, osgHandle);
+    // fixator = new FixedJoint(trunk, global.environment);
+    // fixator->init(odeHandle, osgHandle);
 
     // create pointer to controller
 
@@ -137,7 +139,7 @@ public:
     //AbstractController *controller = new InvertMotorNStep(cc);
 
     
-    AbstractController *controller = new WalkController();
+    controller = new WalkController();
     //controller->init(12,12);
     
 
@@ -146,16 +148,16 @@ public:
     //    controller->setParam("sinerate",50);
     //    controller->setParam("phaseshift",1);
 
-    controller->setParam("adaptrate",0);
-    controller->setParam("rootE",3);
-    controller->setParam("epsC",0.1);
-    controller->setParam("epsA",0.1);
-    controller->setParam("steps",1);
-    controller->setParam("s4avg",2);
-    controller->setParam("s4delay",2);
-    controller->setParam("teacher",0);
-    controller->setParam("dampS",0.0001);
-    controller->setParam("dampA",0.00003);
+    // controller->setParam("adaptrate",0);
+    // controller->setParam("rootE",3);
+    // controller->setParam("epsC",0.1);
+    // controller->setParam("epsA",0.1);
+    // controller->setParam("steps",1);
+    // controller->setParam("s4avg",2);
+    // controller->setParam("s4delay",2);
+    // controller->setParam("teacher",0);
+    // controller->setParam("dampS",0.0001);
+    // controller->setParam("dampA",0.00003);
     //    controller->setParam("continuity",0.5);
     //    controller->setParam("kwta",4);
     //    controller->setParam("inhibition",0.01);
@@ -187,8 +189,12 @@ public:
 
 
   virtual void addCallback(GlobalData& globalData, bool draw, bool pause, bool control) {
-
-
+    
+    // use pseudo parameter to reset robot
+    if (controller->getParam("resetRobot") == 1)
+    {
+      dog->place(osg::Matrix::translate(0,0,.5));
+    }
 
     // if(control && !pause && teachcontroller){
     //   double sensors[12];

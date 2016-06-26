@@ -24,7 +24,7 @@ public:
                               motor* , int number_motors);
 
   //// Custom ////
-  void setRobot();
+ 
   void forwardSensor(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber, Neural_Custom* neural);
   double calFitness(double posNow[3]);
@@ -58,17 +58,18 @@ protected:
   int number_sensors;
   int number_motors;
 
+  bool startOfSim;
 
   //// Neural Network ////
-  int inputSize = 0 + 1;
-  int outputSize = 10;
-  int numberOfNeurons = 5;
-  int maxTime = 500;
+  int inputSize = 0 + 2;        // number of input nodes
+  int outputSize = 10;          // number of output nodes
+  int numberOfNeurons = 2;      
+  int maxTime = 500;            // max time each network has
   
-  int numberOfNetworks = 3;     // number of networks to be used per generation
-  int numberOfGenerations = 5;  // number of generations to run through
-  int generation = 1;
-  int curNetID = 0;
+  int numberOfNetworks = 50;     // number of networks to be used per generation
+  int numberOfGenerations = 100;  // number of generations to run through
+  int generation = 1;           // current generation
+  int curNetID = 0;             // current network ID
 
 
   std::vector<Neural_Custom*> networkList;
@@ -88,6 +89,8 @@ protected:
   paramval sinMod;
   paramval kneeamplitude;
   paramval hipamplitude;
+
+  paramval resetRobot;  // pseudo parameter to cummunicate with simulation, see main.cpp -> addCallBack
 };
 
 #endif

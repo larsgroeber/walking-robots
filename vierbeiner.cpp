@@ -51,7 +51,7 @@ namespace lpzrobots {
 
 
   int VierBeiner::getMotorNumberIntern(){
-    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size();
+    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size();   
   };
 
   /* sets actual motorcommands
@@ -68,7 +68,7 @@ namespace lpzrobots {
       n++;
     }
     FOREACH(vector <HingeServo*>, hipservos, s){
-      (*s)->set(0);//motors[n]);
+      (*s)->set(motors[n]);
       n++;
     }
     FOREACH(vector <HingeServo*>, kneeservos, s){
@@ -92,7 +92,7 @@ namespace lpzrobots {
 
   int VierBeiner::getSensorNumberIntern(){
     return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 3; // 3 Position sensors
-  };
+  };                                                                                            
 
   /* returns actual sensorvalues
       @param sensors sensors scaled to [-1,1] (more or less)
@@ -118,14 +118,15 @@ namespace lpzrobots {
       sensors[n]   = (*s)->get();
       n++;
     }
-      Position position = this->getPosition();
-      const double* posArray = position.toArray();
-      for (int i = 0; i < 3; ++i)
-      {
-        sensors[n] = posArray[i];
-        n++;
-      }
       
+    // get Position of robot - Custom
+    Position position = this->getPosition();
+    const double* posArray = position.toArray();
+    for (int i = 0; i < 3; ++i)
+    {
+      sensors[n] = posArray[i];
+      n++;
+    }
       
     assert(min(sensornumber, getSensorNumberIntern())==n);
     
@@ -163,8 +164,7 @@ namespace lpzrobots {
       like space-internal collision detection, sensor resets/update etc.
       @param global structure that contains global data from the simulation environment
   */
-  void VierBeiner::doInternalStuff(GlobalData& global){
-    
+  void VierBeiner::doInternalStuff(GlobalData& global){    
   }
 
   /** creates vehicle at desired position
