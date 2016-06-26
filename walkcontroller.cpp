@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <fstream>
 
 #include "walkcontroller.h"
 
@@ -22,6 +23,11 @@ WalkController::WalkController()
   number_motors=0;
 
   startOfSim = true;
+  endOfSim = false;
+  highestFitness = 0;
+
+  fitnessFile = "fitness";
+  ofFile.open(fitnessFile);
 
   srand(time(NULL));
 
@@ -32,7 +38,26 @@ WalkController::WalkController()
     networkList[i]->initNetwork(inputSize,outputSize,numberOfNeurons);
     networkList[i]->initWeightsRandom();
   }  
+  generationList.push_back(networkList);
   
+  useCustom = false;
+  if (useCustom) {  // does not work yet
+    t = maxTime;
+    generation = numberOfGenerations + 1;
+    
+    mat inputW = { { 1.81, -0.4901},
+                   { -3.9227, 1.3830} };
+                   
+    mat outputW = { {-4.3729, 0.0423,-0.3863, 7.9904,0.3091,-5.4452,0,-5.2018,0,0.0144},
+                    {6.7878,-1.8403,4.2642,0.1563,-36.3675,0.0514,-3.5695,4.4355,9.0594,1.8276}};
+
+    Neural_Custom* neural;
+    neural = networkList[0];
+    cout << "test" << endl;
+    neural->setWeights(inputW,outputW);
+    startOfSim = false;
+    endOfSim = true;
+  }
 };
 
 void WalkController::init(int sensornumber, int motornumber, RandGen* randGen){
@@ -52,16 +77,17 @@ void WalkController::step(const sensor* sensors, int sensornumber,
                      6,7,8,9 : knee: rh, lh, rf, lf
                      10,11   : ankle rh, lh
    */
+
   // get starting position
   assert(sensornumber == 12+3);
 
 
-  if (startOfSim)
-  {
+  if (startOfSim) {
     cout << "Starting simulation." << endl;
     cout << "Are now using network " << curNetID << " from generation " << generation << endl;
     startOfSim = false;
   }
+
 
   if (t==2) // wait two steps to get a good value
     for (int i = 0; i < 3; ++i) {
@@ -73,10 +99,10 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     }
 
   // current network in use
-  Neural_Custom* curNet = networkList[curNetID];
+  Neural_Custom* curNet = generationList[generation-1][curNetID];
 
 
-  if (t < maxTime) {    
+  if (t < maxTime && !endOfSim) {    
     // let simulation run
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
     
@@ -89,33 +115,50 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     t++;  
   }
 
-  else {
+  // at end of evaluation time
+  else if (!endOfSim) { 
     cout << "Network " << curNetID << " got a fitness of " << curNet->getFitness() << endl;
     if (curNetID < numberOfNetworks - 1) {  
 
-      curNetID++; // move to next network
-      
-      resetRobot = 1; // reset robot to starting position
+      curNetID++;       // move to next network        
     }
-    else if (generation < numberOfGenerations){
 
+    //at end of generation
+    else if (generation < numberOfGenerations){
       cout << "Generation " << generation << " completed." << endl;
 
       curNetID = 0; 
-      resetRobot = 1;
       startNextGen();   // breed new generation of networks
     }
-    else {      
 
+    // at end of run
+    else { 
+      startNextGen();     
       cout << "Finished last generation!" << endl;
+      cout << "Using now best network with fitness " << highestFitness << endl;      
+      endOfSim = true;
+
+      cout << "Best inputWeights:" << endl;
+      bestNetwork->inputWeights.print();  
+      cout << endl; 
+      cout << "Best outputWeights:" << endl;   
+      bestNetwork->outputWeights.print();
+      cout << endl;
     }
 
-    cout << "Are now using network " << curNetID << " from generation " << generation << endl;
+    if (!endOfSim)
+      cout << "Are now using network " << curNetID << " from generation " << generation << endl;
 
+    resetRobot = 1;   // reset robot to starting position
     t = 0;
   }
 
-  
+  // if endOfSim == true
+  else {
+    forwardSensor(sensors, sensornumber, motors, motornumber, bestNetwork);
+    resetRobot = 0;
+    t++;  
+  }  
 };
 
 
@@ -125,18 +168,31 @@ double WalkController::calFitness(double posNow[3]) {
   {
     result += pow(startPos[i] - posNow[i], 2);
   }
-  return exp((double)sqrt(result));
+  return exp((double)sqrt(result))-1;
 }
 
 void WalkController::startNextGen() {
   nextNetworkList.erase(nextNetworkList.begin(), nextNetworkList.end());
 
-  // first calculate sum of all fitnesses
+  // first calculate sum of all fitnesses and get highest Fitness
   double totalFitness = 0;
-  for (unsigned int i = 0; i < networkList.size(); ++i)
+  double thisHighestFitness = 0;
+  for (unsigned int i = 0; i < networkList.size(); ++i) {
+    double thisFitness = networkList[i]->getFitness();
+    
+    if (highestFitness < thisFitness) {
+      highestFitness = thisFitness;
+      bestNetwork = networkList[i];
+    }
+    
+    thisHighestFitness = max(thisFitness, thisHighestFitness);
     totalFitness += networkList[i]->getFitness();
+  }
 
-  cout << "Generation " << generation << " hat a total fitness of " << totalFitness << endl << endl;
+  ofFile << generation << "  " << thisHighestFitness << "  " << totalFitness << endl;
+
+  cout << "Generation " << generation << " hat a total fitness of " << totalFitness << endl;
+  cout << "And a highest fitness of " << thisHighestFitness << endl << endl;
 
   // Breed two networks to new one using fitness as probability
   for (int i = 0; i < numberOfNetworks; ++i) {
@@ -169,12 +225,14 @@ void WalkController::startNextGen() {
 
   networkList = nextNetworkList;
 
+  generationList.push_back(nextNetworkList);
+
   generation++;
 }
 
 void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber, Neural_Custom* neural) {
-    motors[0] = 0;
+  motors[0] = 0;
   motors[1] = 0;
 
   //stepNoLearning(sensors, sensornumber, motors, motornumber);
@@ -185,7 +243,7 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
     input(0,i) = sensors[i+2];
   }
   input(0,1) = sin(t/speed) * sinMod;
-  input(0,0) = 1;//sin(t/speed + (M_PI/2)) * sinMod;
+  input(0,0) = sin(t/speed + (M_PI/2)) * sinMod;
 
   output = neural->forward(input);
   //output.print();

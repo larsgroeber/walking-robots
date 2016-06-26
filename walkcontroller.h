@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <selforg/abstractcontroller.h>
+#include <fstream>
 
 /**
  * robot controller for vierbeiner walk (hard coded)
@@ -29,7 +30,8 @@ public:
                           motor* motors, int motornumber, Neural_Custom* neural);
   double calFitness(double posNow[3]);
   void startNextGen();
-
+  void forwardSensorCustom(const sensor* sensors, int sensornumber,
+                          motor* motors, int motornumber);
 
   //// End Custom ////
 
@@ -59,21 +61,29 @@ protected:
   int number_motors;
 
   bool startOfSim;
+  bool endOfSim;
+  bool useCustom;
 
   //// Neural Network ////
-  int inputSize = 0 + 2;        // number of input nodes
-  int outputSize = 10;          // number of output nodes
+  int inputSize = 0 + 2;          // number of input nodes
+  int outputSize = 10;            // number of output nodes
   int numberOfNeurons = 2;      
-  int maxTime = 500;            // max time each network has
+  int maxTime = 500;              // max time each network has (in sim-steps)
   
-  int numberOfNetworks = 50;     // number of networks to be used per generation
+  int numberOfNetworks = 50;      // number of networks to be used per generation
   int numberOfGenerations = 100;  // number of generations to run through
-  int generation = 1;           // current generation
-  int curNetID = 0;             // current network ID
+  int generation = 1;             // current generation
+  int curNetID = 0;               // current network ID
 
 
   std::vector<Neural_Custom*> networkList;
   std::vector<Neural_Custom*> nextNetworkList;
+
+  std::vector< std::vector<Neural_Custom*> > generationList;
+
+  // to keep weights of the network with the highest fitness
+  Neural_Custom* bestNetwork;
+  double highestFitness;
 
   //// End Network ////
 
@@ -91,6 +101,9 @@ protected:
   paramval hipamplitude;
 
   paramval resetRobot;  // pseudo parameter to cummunicate with simulation, see main.cpp -> addCallBack
+
+  std::ofstream ofFile;
+  std::string fitnessFile;
 };
 
 #endif
