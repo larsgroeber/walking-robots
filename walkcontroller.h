@@ -71,7 +71,6 @@ protected:
   int maxTime = 500;              // max time each network has (in sim-steps)
   
   int numberOfNetworks = 50;      // number of networks to be used per generation
-  int numberOfGenerations = 100;  // number of generations to run through
   int generation = 1;             // current generation
   int curNetID = 0;               // current network ID
 
@@ -95,12 +94,19 @@ protected:
   double startPos[3];   // array holding the starting position of the robot
   double posArray[3];   // array holding the current position of the robot
 
+  double lastPos[3];
+
+  double averageSpeed;
+  double totalSpeed;
+  double distanceThen;
+
   paramval speed;
   paramval sinMod;
   paramval kneeamplitude;
   paramval hipamplitude;
 
-  paramval resetRobot;  // pseudo parameter to cummunicate with simulation, see main.cpp -> addCallBack
+  paramval resetRobot;            // pseudo parameter to cummunicate with simulation, see main.cpp -> addCallBack
+  paramval numberOfGenerations;   // number of generations to run through
 
   std::ofstream ofFile;
   std::string fitnessFile;

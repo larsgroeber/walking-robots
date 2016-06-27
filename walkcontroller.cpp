@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <fstream>
+#include <stdlib.h>
 
 #include "walkcontroller.h"
 
@@ -18,6 +19,7 @@ WalkController::WalkController()
   addParameterDef("hipampl",&hipamplitude, 0.8);
   addParameterDef("kneeampl",&kneeamplitude, 0.8);
   addParameterDef("resetRobot",&resetRobot, 0);
+  addParameterDef("numberOfGenerations",&numberOfGenerations, 100);
 
   number_sensors=0;
   number_motors=0;
@@ -41,9 +43,9 @@ WalkController::WalkController()
   generationList.push_back(networkList);
   
   useCustom = false;
-  if (useCustom) {  // does not work yet
+  if (useCustom) {  // use higher powerfactor
     t = maxTime;
-    generation = numberOfGenerations + 1;
+    generation = numberOfGenerations;
     
     mat inputW = { { 1.81, -0.4901},
                    { -3.9227, 1.3830} };
@@ -51,10 +53,10 @@ WalkController::WalkController()
     mat outputW = { {-4.3729, 0.0423,-0.3863, 7.9904,0.3091,-5.4452,0,-5.2018,0,0.0144},
                     {6.7878,-1.8403,4.2642,0.1563,-36.3675,0.0514,-3.5695,4.4355,9.0594,1.8276}};
 
-    Neural_Custom* neural;
-    neural = networkList[0];
-    cout << "test" << endl;
-    neural->setWeights(inputW,outputW);
+    
+    bestNetwork = new Neural_Custom;
+    bestNetwork->initNetwork(inputSize,outputSize,numberOfNeurons);    
+    bestNetwork->setWeights(inputW,outputW);
     startOfSim = false;
     endOfSim = true;
   }
@@ -82,6 +84,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
   assert(sensornumber == 12+3);
 
 
+
   if (startOfSim) {
     cout << "Starting simulation." << endl;
     cout << "Are now using network " << curNetID << " from generation " << generation << endl;
@@ -99,8 +102,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     }
 
   // current network in use
-  Neural_Custom* curNet = generationList[generation-1][curNetID];
-
+  Neural_Custom* curNet = !useCustom ? generationList[generation-1][curNetID] : new Neural_Custom;
 
   if (t < maxTime && !endOfSim) {    
     // let simulation run
@@ -163,12 +165,35 @@ void WalkController::step(const sensor* sensors, int sensornumber,
 
 
 double WalkController::calFitness(double posNow[3]) {
-  double result = 0.;
+  double distanceNow = 0.;
+  double currentSpeed = 0;
+  double distanceThen;
+  double penalty;
+  int penStepSize = 5;
+
+  // calculate current distance
   for (int i = 0; i < 2; ++i)
   {
-    result += pow(startPos[i] - posNow[i], 2);
+    distanceNow += pow(startPos[i] - posNow[i], 2);
   }
-  return exp((double)sqrt(result))-1;
+
+  // calculate currentSpeed
+  if (t == 0) {   
+    penalty = 0; 
+    averageSpeed = 0;
+    totalSpeed = 0;
+    distanceThen = distanceNow;
+  } 
+  else if (t % penStepSize == 0) {
+    currentSpeed = (distanceNow - distanceThen) / penStepSize;
+    totalSpeed += currentSpeed;
+    averageSpeed = totalSpeed / ((double)(t/penStepSize));
+    penalty += abs(averageSpeed - currentSpeed);
+    distanceThen = distanceNow;
+    cout << penalty << endl;
+  }
+
+  return exp((double)sqrt(distanceNow)) - exp(penalty);
 }
 
 void WalkController::startNextGen() {
