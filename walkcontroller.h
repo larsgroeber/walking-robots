@@ -73,7 +73,8 @@ protected:
   int numberOfNetworks = 50;      // number of networks to be used per generation
   int generation = 1;             // current generation
   int curNetID = 0;               // current network ID
-
+  double penalty;
+  
 
   std::vector<Neural_Custom*> networkList;
   std::vector<Neural_Custom*> nextNetworkList;

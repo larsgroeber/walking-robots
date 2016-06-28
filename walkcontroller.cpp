@@ -102,7 +102,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     }
 
   // current network in use
-  Neural_Custom* curNet = !useCustom ? generationList[generation-1][curNetID] : new Neural_Custom;
+  Neural_Custom* curNet = !useCustom ? networkList[curNetID] : new Neural_Custom;
 
   if (t < maxTime && !endOfSim) {    
     // let simulation run
@@ -166,8 +166,8 @@ void WalkController::step(const sensor* sensors, int sensornumber,
 
 double WalkController::calFitness(double posNow[3]) {
   double distanceNow = 0.;
-  double currentSpeed = 0;
-  double distanceThen;
+  double currentSpeed = 0.;
+  
   int penStepSize = 5;
 
   // calculate current distance
@@ -177,7 +177,7 @@ double WalkController::calFitness(double posNow[3]) {
   }
 
   // calculate penalty
-  if (t == 0) {   
+  if (t == 3) {   
     penalty = 0; 
     averageSpeed = 0;
     totalSpeed = 0;
@@ -189,7 +189,7 @@ double WalkController::calFitness(double posNow[3]) {
     averageSpeed = totalSpeed / ((double)(t/penStepSize));
     penalty += abs(averageSpeed - currentSpeed);
     distanceThen = distanceNow;
-    cout << averageSpeed << endl;
+    //cout << averageSpeed << endl;
   }
 
   return exp((double)sqrt(distanceNow));
