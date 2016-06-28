@@ -27,6 +27,7 @@ WalkController::WalkController()
   startOfSim = true;
   endOfSim = false;
   highestFitness = 0;
+  penalty = 0;
 
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
@@ -47,12 +48,11 @@ WalkController::WalkController()
     t = maxTime;
     generation = numberOfGenerations;
     
-    mat inputW = { { 1.81, -0.4901},
-                   { -3.9227, 1.3830} };
+    mat inputW = { { -3.1385,21.8814},
+                   { 0,  -0.3185} };
                    
-    mat outputW = { {-4.3729, 0.0423,-0.3863, 7.9904,0.3091,-5.4452,0,-5.2018,0,0.0144},
-                    {6.7878,-1.8403,4.2642,0.1563,-36.3675,0.0514,-3.5695,4.4355,9.0594,1.8276}};
-
+    mat outputW = { {8.9953,  -65.6696,   55.4174,   -0.7012,   -2.8553,   -2.9402,    1.2224,  0,   -1.5797,    2.2100},
+                    {-0.6922,    5.5808,    0.0003,   15.7358,    1.1298,   -4.7488,    1.9581, 4.0304,    4.4995,    0.0092}};
     
     bestNetwork = new Neural_Custom;
     bestNetwork->initNetwork(inputSize,outputSize,numberOfNeurons);    
@@ -109,7 +109,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
     
     // calculate current fitness of the network
-    curNet->setFitness(t > 2 ? max(curNet->getFitness(), calFitness(posArray)) : 0);
+    curNet->setFitness(t > 2 ? max(curNet->getFitness(), calFitness(posArray)) - exp(penalty) : 0);
 
     resetRobot = 0;
 
@@ -168,7 +168,6 @@ double WalkController::calFitness(double posNow[3]) {
   double distanceNow = 0.;
   double currentSpeed = 0;
   double distanceThen;
-  double penalty;
   int penStepSize = 5;
 
   // calculate current distance
@@ -177,7 +176,7 @@ double WalkController::calFitness(double posNow[3]) {
     distanceNow += pow(startPos[i] - posNow[i], 2);
   }
 
-  // calculate currentSpeed
+  // calculate penalty
   if (t == 0) {   
     penalty = 0; 
     averageSpeed = 0;
@@ -190,10 +189,10 @@ double WalkController::calFitness(double posNow[3]) {
     averageSpeed = totalSpeed / ((double)(t/penStepSize));
     penalty += abs(averageSpeed - currentSpeed);
     distanceThen = distanceNow;
-    cout << penalty << endl;
+    cout << averageSpeed << endl;
   }
 
-  return exp((double)sqrt(distanceNow)) - exp(penalty);
+  return exp((double)sqrt(distanceNow));
 }
 
 void WalkController::startNextGen() {
