@@ -109,7 +109,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
     
     // calculate current fitness of the network
-    curNet->setFitness(t > 2 ? max(curNet->getFitness(), calFitness(posArray)) - exp(penalty) : 0);
+    curNet->setFitness(t > 2 ? max(curNet->getFitness(), calFitness(posArray)) : 0);
 
     resetRobot = 0;
 
@@ -171,9 +171,9 @@ double WalkController::calFitness(double posNow[3]) {
   int penStepSize = 5;
 
   // calculate current distance
-  for (int i = 0; i < 2; ++i)
+  for (int i = 0; i < 1; ++i)
   {
-    distanceNow += pow(startPos[i] - posNow[i], 2);
+    distanceNow += -pow(startPos[i] - posNow[i],1);
   }
 
   // calculate penalty
@@ -187,12 +187,13 @@ double WalkController::calFitness(double posNow[3]) {
     currentSpeed = (distanceNow - distanceThen) / penStepSize;
     totalSpeed += currentSpeed;
     averageSpeed = totalSpeed / ((double)(t/penStepSize));
-    penalty += abs(averageSpeed - currentSpeed);
+    //penalty += abs(averageSpeed - currentSpeed);
     distanceThen = distanceNow;
     //cout << averageSpeed << endl;
   }
 
-  return exp((double)sqrt(distanceNow));
+  //return exp(pow(averageSpeed,2)) - 1;
+  return exp((double)distanceNow) - 1;
 }
 
 void WalkController::startNextGen() {
@@ -215,7 +216,7 @@ void WalkController::startNextGen() {
 
   ofFile << generation << "  " << thisHighestFitness << "  " << totalFitness << endl;
 
-  cout << "Generation " << generation << " hat a total fitness of " << totalFitness << endl;
+  cout << "Generation " << generation << " hat an average fitness of " << totalFitness/numberOfNetworks << endl;
   cout << "And a highest fitness of " << thisHighestFitness << endl << endl;
 
   // Breed two networks to new one using fitness as probability
@@ -247,6 +248,8 @@ void WalkController::startNextGen() {
       nextNetworkList.push_back(networkList[first]->breed(networkList[second]));
   }
 
+  assert(nextNetworkList.size() == numberOfNetworks);
+
   networkList = nextNetworkList;
 
   generationList.push_back(nextNetworkList);
@@ -266,8 +269,10 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
   {
     input(0,i) = sensors[i+2];
   }
-  input(0,1) = sin(t/speed) * sinMod;
-  input(0,0) = sin(t/speed + (M_PI/2)) * sinMod;
+  input(0,0) = sin(t/speed) * sinMod;
+  input(0,1) = sin(t/speed + (M_PI/2)) * sinMod;
+  // input(0,2) = sin(t/speed + (M_PI)) * sinMod;     // zwei Inputs erscheinen besser
+  // input(0,3) = sin(t/speed + (3*M_PI/2)) * sinMod;
 
   output = neural->forward(input);
   //output.print();
