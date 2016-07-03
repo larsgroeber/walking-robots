@@ -2,6 +2,7 @@
 #include <math.h>
 #include <fstream>
 #include <stdlib.h>
+#include <string>
 
 #include "walkcontroller.h"
 
@@ -32,7 +33,7 @@ WalkController::WalkController()
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
   
-  motorFile.open("motorOutput");
+  //motorFile.open("motorOutput");
 
   srand(time(NULL));
 
@@ -46,7 +47,7 @@ WalkController::WalkController()
   generationList.push_back(networkList);
 
   
-  useCustom = false;
+  useCustom = true;
   if (useCustom) {  // use higher powerfactor
     t = maxTime;
     generation = numberOfGenerations;
@@ -251,6 +252,31 @@ void WalkController::startNextGen() {
 
   generationList.push_back(nextNetworkList);
 
+  // now run bestNetwork again but write output values in file
+  if (bestNetwork != lastBestNetwork)
+  {    
+    ofstream bestmotorOutput;
+    bestmotorOutput.open("./motorData/motorOutput"+to_string(generation));
+
+    for (int i = 0; i < maxTime; ++i) // using i as t
+    {
+      input(0,0) = sin(i/speed) * sinMod;
+      input(0,1) = sin(i/speed + (M_PI/2)) * sinMod;
+      
+      output = bestNetwork->forward(input);
+
+      bestmotorOutput << i << "\t";
+      for (int j = 0; j < outputSize; ++j)
+      {
+        bestmotorOutput << 2 * output(0,j) - 1 << "\t";
+      }
+      bestmotorOutput << endl;
+    }
+    bestmotorOutput.close();
+    lastBestNetwork = bestNetwork;
+  }
+
+  
   generation++;
   curNetID = 0;
 }
@@ -280,18 +306,6 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
     motors[i+2] = 2 * output(0,i) - 1;
   }
   //output.print();
-
-  
-  // print only the first 2*speed steps
-  if (t < 2*speed)
-  {
-    motorFile << totalTime << "\t";
-    for (int i = 0; i < outputSize; ++i)
-    {
-      motorFile << motors[i+2] << "\t";
-    }
-    motorFile << endl;
-  }
  
 };
 
@@ -301,16 +315,7 @@ void WalkController::startOfNewNet() {
   averageSpeed = 0;
   totalSpeed = 0;
 
-  if (highestFitness < curNet->getFitness())
-  {
-    ofstream bestmotorOutput;
-    bestmotorOutput.open("motorOutput"+generation);
-
-    for (int i = 0; i < 2*speed; ++i)
-    {
-      forwardSensor
-    }
-  }
+  
   curNetID++;
 }
 

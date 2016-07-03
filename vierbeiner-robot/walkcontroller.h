@@ -88,6 +88,7 @@ protected:
 
   // to keep weights of the network with the highest fitness
   Neural_Custom* bestNetwork;
+  Neural_Custom* lastBestNetwork;
 
   // current network in use
   Neural_Custom* curNet;

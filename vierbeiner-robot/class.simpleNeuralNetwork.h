@@ -54,6 +54,7 @@ public:
 
         this->inputVec = inputVec;
         mat nInput;
+        assert(inputWeights.n_rows == inputVec.n_cols);
         nInput = inputVec * inputWeights;                     // adding all inputs for every neuron together - nInput has dim(input.rows, numberOfNeurons)
 
         for (int i = 0; i < inputVec.n_rows; ++i) {           // applying sigmoid function to every neuron
@@ -69,7 +70,7 @@ public:
                 sigmoid(outputVec(i,j));
             }
         }
-
+        
         //outputVec = normalise(outputVec, 2, 1);    
         return outputVec;
     }
