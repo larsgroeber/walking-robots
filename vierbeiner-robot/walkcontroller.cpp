@@ -13,6 +13,7 @@ using namespace arma;
 WalkController::WalkController()
   : AbstractController("walkcontroller", "$Id$"){
   t=0;
+  totalTime = 0;
   addParameterDef("speed",&speed, 30.0);
   addParameterDef("sinMod",&sinMod, 10);
   addParameterDef("hipampl",&hipamplitude, 0.8);
@@ -43,6 +44,7 @@ WalkController::WalkController()
     networkList[i]->initWeightsRandom();
   }  
   generationList.push_back(networkList);
+
   
   useCustom = false;
   if (useCustom) {  // use higher powerfactor
@@ -103,7 +105,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     }
 
   // current network in use
-  Neural_Custom* curNet = !useCustom ? networkList[curNetID] : new Neural_Custom;
+  curNet = !useCustom ? networkList[curNetID] : new Neural_Custom;
 
   if (t < maxTime && !endOfSim) {    
     // let simulation run
@@ -115,7 +117,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     resetRobot = 0;
 
     // step time forward
-    t++;  
+    endOfStep();  
   }
 
   // at end of evaluation time
@@ -123,14 +125,14 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     cout << "Network " << curNetID << " got a fitness of " << curNet->getFitness() << endl;
     if (curNetID < numberOfNetworks - 1) {  
 
-      curNetID++;       // move to next network        
+      startOfNewNet();       // move to next network        
     }
 
     //at end of generation
     else if (generation < numberOfGenerations){
       cout << "Generation " << generation << " completed." << endl;
 
-      curNetID = 0; 
+       
       startNextGen();   // breed new generation of networks
     }
 
@@ -160,7 +162,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
   else {
     forwardSensor(sensors, sensornumber, motors, motornumber, bestNetwork);
     resetRobot = 0;
-    t++;  
+    endOfStep(); 
   }  
 };
 
@@ -178,13 +180,7 @@ double WalkController::calFitness(double posNow[3]) {
   }
 
   // calculate penalty
-  if (t == 3) {   
-    penalty = 0; 
-    averageSpeed = 0;
-    totalSpeed = 0;
-    distanceThen = distanceNow;
-  } 
-  else if (t % penStepSize == 0) {
+  if (t % penStepSize == 0 && t != 0) {
     currentSpeed = (distanceNow - distanceThen) / penStepSize;
     totalSpeed += currentSpeed;
     averageSpeed = totalSpeed / ((double)(t/penStepSize));
@@ -256,6 +252,7 @@ void WalkController::startNextGen() {
   generationList.push_back(nextNetworkList);
 
   generation++;
+  curNetID = 0;
 }
 
 void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
@@ -266,10 +263,10 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
   //stepNoLearning(sensors, sensornumber, motors, motornumber);
   
 
-  for (int i = 0; i < inputSize; ++i)
-  {
-    input(0,i) = sensors[i+2];
-  }
+  // for (int i = 0; i < inputSize; ++i)
+  // {
+  //   input(0,i) = sensors[i+2];
+  // }
   input(0,0) = sin(t/speed) * sinMod;
   input(0,1) = sin(t/speed + (M_PI/2)) * sinMod;
   // input(0,2) = sin(t/speed + (M_PI)) * sinMod;     // zwei Inputs erscheinen besser
@@ -278,15 +275,49 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
   output = neural->forward(input);
   //output.print();
 
-  motorFile << t << "\t";
   for (int i = 0; i < outputSize; ++i)
   {
     motors[i+2] = 2 * output(0,i) - 1;
-    motorFile << motors[i+2] << "\t";
   }
   //output.print();
-  motorFile << endl;
+
+  
+  // print only the first 2*speed steps
+  if (t < 2*speed)
+  {
+    motorFile << totalTime << "\t";
+    for (int i = 0; i < outputSize; ++i)
+    {
+      motorFile << motors[i+2] << "\t";
+    }
+    motorFile << endl;
+  }
+ 
 };
+
+void WalkController::startOfNewNet() {
+  t = 0;
+  penalty = 0; 
+  averageSpeed = 0;
+  totalSpeed = 0;
+
+  if (highestFitness < curNet->getFitness())
+  {
+    ofstream bestmotorOutput;
+    bestmotorOutput.open("motorOutput"+generation);
+
+    for (int i = 0; i < 2*speed; ++i)
+    {
+      forwardSensor
+    }
+  }
+  curNetID++;
+}
+
+void WalkController::endOfStep () {
+  t++;
+  totalTime++;
+}
 
 void WalkController::stepNoLearning(const sensor* sensors, int number_sensors,
                                     motor* motors, int number_motors) {  

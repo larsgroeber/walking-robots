@@ -26,12 +26,17 @@ public:
 
   //// Custom ////
  
+  // calculate motorcommands
   void forwardSensor(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber, Neural_Custom* neural);
+  // calculate the fitness
   double calFitness(double posNow[3]);
+  // start a new generation of networks
   void startNextGen();
-  void forwardSensorCustom(const sensor* sensors, int sensornumber,
-                          motor* motors, int motornumber);
+  // reset variables for new network (like time, penalty etc.)
+  void startOfNewNet();
+  // step time forward
+  void endOfStep();
 
   //// End Custom ////
 
@@ -83,11 +88,14 @@ protected:
 
   // to keep weights of the network with the highest fitness
   Neural_Custom* bestNetwork;
+
+  // current network in use
+  Neural_Custom* curNet;
   double highestFitness;
 
   //// End Network ////
 
-
+  int totalTime; // total time the simulation ran for
 
   mat input = mat(1,inputSize);
   mat output = mat(1,outputSize);
