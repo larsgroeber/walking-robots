@@ -1,4 +1,4 @@
-# vierbeiner-robot
+# custom-robots
 
 Robot-project for the course [Self-Organization: Theory and Simulations](http://itp.uni-frankfurt.de/~gros/Vorlesungen/SO/) at the Goethe University in Frankfurt aiming to teach a robot how to walk.
 
