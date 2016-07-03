@@ -1,0 +1,225 @@
+# DO NOT DELETE
+
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/simulation.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/base.h
+main.o: /home/lars/include/ode-dbl/ode.h
+main.o: /home/lars/include/ode-dbl/odeconfig.h /usr/include/stdio.h
+main.o: /usr/include/features.h /usr/include/stdc-predef.h
+main.o: /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h
+main.o: /usr/include/stdlib.h /usr/include/alloca.h /usr/include/math.h
+main.o: /usr/include/string.h /usr/include/xlocale.h
+main.o: /home/lars/include/ode-dbl/compatibility.h
+main.o: /home/lars/include/ode-dbl/common.h
+main.o: /home/lars/include/ode-dbl/error.h
+main.o: /home/lars/include/ode-dbl/odeinit.h
+main.o: /home/lars/include/ode-dbl/contact.h
+main.o: /home/lars/include/ode-dbl/memory.h
+main.o: /home/lars/include/ode-dbl/odemath.h
+main.o: /home/lars/include/ode-dbl/matrix.h
+main.o: /home/lars/include/ode-dbl/timer.h
+main.o: /home/lars/include/ode-dbl/rotation.h
+main.o: /home/lars/include/ode-dbl/mass.h /home/lars/include/ode-dbl/misc.h
+main.o: /home/lars/include/ode-dbl/objects.h
+main.o: /home/lars/include/ode-dbl/odecpp.h
+main.o: /home/lars/include/ode-dbl/collision_space.h
+main.o: /home/lars/include/ode-dbl/collision.h
+main.o: /home/lars/include/ode-dbl/collision_trimesh.h
+main.o: /home/lars/include/ode-dbl/odecpp_collision.h
+main.o: /home/lars/include/ode-dbl/export-dif.h /usr/include/osg/Transform
+main.o: /usr/include/osg/Group /usr/include/osg/Node /usr/include/osg/Object
+main.o: /usr/include/osg/Referenced /usr/include/osg/Export
+main.o: /usr/include/osg/Config /usr/include/OpenThreads/ScopedLock
+main.o: /usr/include/OpenThreads/Mutex /usr/include/OpenThreads/Exports
+main.o: /usr/include/OpenThreads/Config /usr/include/OpenThreads/Atomic
+main.o: /usr/include/osg/CopyOp /usr/include/osg/ref_ptr
+main.o: /usr/include/osg/Notify /usr/include/osg/StateSet
+main.o: /usr/include/osg/StateAttribute
+main.o: /usr/include/osg/StateAttributeCallback /usr/include/osg/Shader
+main.o: /usr/include/osg/GL2Extensions /usr/include/osg/GL
+main.o: /usr/include/GL/gl.h /usr/include/GL/glext.h /usr/include/inttypes.h
+main.o: /usr/include/stdint.h /usr/include/osg/buffered_value
+main.o: /usr/include/osg/DisplaySettings /usr/include/osg/Matrixd
+main.o: /usr/include/osg/Vec3d /usr/include/osg/Vec2d /usr/include/osg/Vec2f
+main.o: /usr/include/osg/Math /usr/include/osg/Vec3f /usr/include/osg/Vec4d
+main.o: /usr/include/osg/Vec4f /usr/include/osg/Quat /usr/include/osg/Uniform
+main.o: /usr/include/osg/Array /usr/include/osg/MixinVector
+main.o: /usr/include/osg/Vec2b /usr/include/osg/Vec3b /usr/include/osg/Vec4b
+main.o: /usr/include/osg/Vec2s /usr/include/osg/Vec3s /usr/include/osg/Vec4s
+main.o: /usr/include/osg/Vec2i /usr/include/osg/Vec3i /usr/include/osg/Vec4i
+main.o: /usr/include/osg/Vec2ub /usr/include/osg/Vec3ub
+main.o: /usr/include/osg/Vec4ub /usr/include/osg/Vec3 /usr/include/osg/Vec2us
+main.o: /usr/include/osg/Vec3us /usr/include/osg/Vec4us
+main.o: /usr/include/osg/Vec2ui /usr/include/osg/Vec3ui
+main.o: /usr/include/osg/Vec4ui /usr/include/osg/Vec2 /usr/include/osg/Vec4
+main.o: /usr/include/osg/Matrix /usr/include/osg/Matrixf
+main.o: /usr/include/osg/BufferObject /usr/include/osg/FrameStamp
+main.o: /usr/include/osg/BoundingSphere /usr/include/osg/NodeCallback
+main.o: /usr/include/osg/NodeVisitor /usr/include/osgText/Text
+main.o: /usr/include/osg/Drawable /usr/include/osg/BoundingBox
+main.o: /usr/include/osg/Shape /usr/include/osg/Plane
+main.o: /usr/include/osg/PrimitiveSet /usr/include/osg/RenderInfo
+main.o: /usr/include/osg/State /usr/include/osg/Observer
+main.o: /usr/include/osg/Timer /usr/include/osg/ShaderComposer
+main.o: /usr/include/osg/Program /usr/include/osg/Polytope
+main.o: /usr/include/osg/fast_back_stack /usr/include/osg/Viewport
+main.o: /usr/include/osg/GLBeginEndAdapter /usr/include/osg/ArrayDispatchers
+main.o: /usr/include/osg/GraphicsCostEstimator /usr/include/osg/View
+main.o: /usr/include/osg/Camera /usr/include/osg/ColorMask
+main.o: /usr/include/osg/CullSettings /usr/include/osg/ClearNode
+main.o: /usr/include/osg/Texture /usr/include/osg/Image
+main.o: /usr/include/osg/GraphicsContext /usr/include/osg/GraphicsThread
+main.o: /usr/include/osg/OperationThread /usr/include/osg/observer_ptr
+main.o: /usr/include/OpenThreads/Thread /usr/include/OpenThreads/Barrier
+main.o: /usr/include/OpenThreads/Condition /usr/include/OpenThreads/Block
+main.o: /usr/include/osg/Stats /usr/include/osg/Light
+main.o: /usr/include/osgText/TextBase /usr/include/osgText/String
+main.o: /usr/include/osgText/Export /usr/include/osgText/KerningType
+main.o: /usr/include/osgText/Font /usr/include/osg/TexEnv
+main.o: /usr/include/osgText/Glyph /usr/include/osg/Texture2D
+main.o: /usr/include/osg/Geometry /usr/include/osg/Geode
+main.o: /usr/include/osgText/Style /usr/include/osgDB/Options
+main.o: /usr/include/osgDB/Callbacks /usr/include/osgDB/AuthenticationMap
+main.o: /usr/include/osgDB/Export /usr/include/osgDB/ReaderWriter
+main.o: /usr/include/osgDB/FileCache /usr/include/osgDB/DatabaseRevisions
+main.o: /usr/include/osg/ObserverNodePath
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/osghandle.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/osgforwarddecl.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/color.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/colorschema.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/stl_map.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/odehandle.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/substance.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/hudstatistics.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/statistictools.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/inspectable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/stl_adds.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/callbackable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/backcaller.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/stl_map.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/measuremodes.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/analysationmodes.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/templatevalueanalysation.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/configurable.h
+main.o: /usr/include/osgViewer/Viewer /usr/include/osg/ArgumentParser
+main.o: /usr/include/osg/ApplicationUsage /usr/include/osgGA/EventVisitor
+main.o: /usr/include/osg/Billboard /usr/include/osg/LOD
+main.o: /usr/include/osg/Switch /usr/include/osg/LightSource
+main.o: /usr/include/osg/Projection /usr/include/osg/OccluderNode
+main.o: /usr/include/osg/ConvexPlanarOccluder
+main.o: /usr/include/osg/ConvexPlanarPolygon
+main.o: /usr/include/osgGA/GUIEventAdapter /usr/include/osgGA/Export
+main.o: /usr/include/osgGA/GUIActionAdapter /usr/include/osgGA/EventQueue
+main.o: /usr/include/osgUtil/UpdateVisitor /usr/include/osgUtil/Export
+main.o: /usr/include/osgViewer/GraphicsWindow /usr/include/osgViewer/Export
+main.o: /usr/include/osgViewer/View /usr/include/osgUtil/PolytopeIntersector
+main.o: /usr/include/osgUtil/IntersectionVisitor
+main.o: /usr/include/osgUtil/LineSegmentIntersector
+main.o: /usr/include/osgUtil/SceneView
+main.o: /usr/include/osg/CollectOccludersVisitor /usr/include/osg/CullStack
+main.o: /usr/include/osg/CullingSet /usr/include/osg/ShadowVolumeOccluder
+main.o: /usr/include/osgUtil/CullVisitor /usr/include/osgUtil/StateGraph
+main.o: /usr/include/osgUtil/RenderLeaf /usr/include/osgUtil/RenderStage
+main.o: /usr/include/osg/FrameBufferObject /usr/include/osgUtil/RenderBin
+main.o: /usr/include/osgUtil/PositionalStateContainer
+main.o: /usr/include/osgGA/CameraManipulator
+main.o: /usr/include/osg/CoordinateSystemNode
+main.o: /usr/include/osgGA/GUIEventHandler /usr/include/osgGA/Device
+main.o: /usr/include/osgViewer/Scene /usr/include/osgDB/DatabasePager
+main.o: /usr/include/osg/PagedLOD
+main.o: /usr/include/osgUtil/IncrementalCompileOperation
+main.o: /usr/include/osgUtil/GLObjectsVisitor
+main.o: /usr/include/osgDB/SharedStateManager /usr/include/osgDB/ImagePager
+main.o: /usr/include/osgViewer/ViewerBase /usr/include/osgViewer/Keystone
+main.o: /usr/include/osgViewer/ViewerEventHandlers
+main.o: /usr/include/osg/AnimationPath
+main.o: /usr/include/osgGA/AnimationPathManipulator
+main.o: /usr/include/osgDB/fstream
+main.o: /usr/include/osgGA/KeySwitchMatrixManipulator
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/globaldata.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/odeconfig.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/sound.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/pos.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/position.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/tmpobject.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/pose.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/plotoption.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/globaldatabase.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/agent.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/wiredcontroller.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/plotoptionengine.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/plotoption.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/abstractcontroller.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/configurable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/storeable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/randomgenerator.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/mac_drand48r.h
+main.o: /usr/include/limits.h /usr/include/limits.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/sensormotorinfo.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/types.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/trackrobots.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/trackable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/configurablelist.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/backcallervector.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/grabframe.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/backcaller.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/camerahandle.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/odeagent.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/agent.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/storeable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/oderobot.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/abstractrobot.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/trackable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/position.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/sensor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/types.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/stl_adds.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/matrix.h
+main.o: /usr/include/assert.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/sensormotorinfoable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/sensormotorinfo.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/motor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/tmpprimitive.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/osgprimitive.h
+main.o: /usr/include/osgDB/ReadFile /usr/include/osgDB/Registry
+main.o: /usr/include/OpenThreads/ReentrantMutex /usr/include/osg/KdTree
+main.o: /usr/include/osgDB/DynamicLibrary /usr/include/osgDB/DotOsgWrapper
+main.o: /usr/include/osgDB/Input /usr/include/osgDB/Output
+main.o: /usr/include/osgDB/ObjectWrapper /usr/include/osgDB/Serializer
+main.o: /usr/include/osgDB/InputStream /usr/include/osg/Endian
+main.o: /usr/include/osgDB/StreamOperator /usr/include/osgDB/DataTypes
+main.o: /usr/include/osgDB/OutputStream /usr/include/osgDB/ImageProcessor
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/osgprimitive.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/primitive.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/operator.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/passivesphere.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/abstractobstacle.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/passivecapsule.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/sinecontroller.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/abstractcontroller.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/noisegenerator.h
+main.o: /usr/include/time.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/one2onewiring.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/abstractwiring.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/matrix.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/noisegenerator.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/ashigaru.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/raysensorbank.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/raysensor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/physicalsensor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/inspectable.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/contactsensor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/color.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/physicalsensor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/torquesensor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/ashigarusensormotordefinition.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/joint.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/axis.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/oneaxisservo.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/joint.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/pid.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/angularmotor.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/selforg/include/selforg/controller_misc.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/twoaxisservo.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/spring.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/pid.h
+main.o: /home/lars/LpzRobots/lpzrobots-master/ode_robots/include/ode_robots/angularmotor.h
