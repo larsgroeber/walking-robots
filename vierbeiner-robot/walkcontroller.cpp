@@ -33,7 +33,7 @@ WalkController::WalkController()
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
   
-  //motorFile.open("motorOutput");
+  motorFile.open("motorOutput");
 
   srand(time(NULL));
 
@@ -47,7 +47,7 @@ WalkController::WalkController()
   generationList.push_back(networkList);
 
   
-  useCustom = true;
+  useCustom = false;
   if (useCustom) {  // use higher powerfactor
     t = maxTime;
     generation = numberOfGenerations;
@@ -307,6 +307,12 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
   }
   //output.print();
  
+ /*motorFile << t << "\t";
+ for (int i = 0; i < outputSize; ++i)
+ {
+   motorFile << 2 * output(0,i) - 1 << "\t";
+ }
+ motorFile << endl;*/
 };
 
 void WalkController::startOfNewNet() {
