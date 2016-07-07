@@ -29,6 +29,8 @@ WalkController::WalkController()
   endOfSim = false;
   highestFitness = 0;
   penalty = 0;
+  useBestNetwork = false;
+  takingVideo = false;
 
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
@@ -108,7 +110,24 @@ void WalkController::step(const sensor* sensors, int sensornumber,
   // current network in use
   curNet = !useCustom ? networkList[curNetID] : new Neural_Custom;
 
-  if (t < maxTime && !endOfSim) {    
+  // dirty way to run bestnetwork at the end of each generation for video taking purposes
+  if (useBestNetwork && takingVideo) {
+    if (t == 0)
+      cout << "Using now bestNetwork! " << bestNetwork->getFitness() << endl;
+    
+    resetRobot = 0;
+    forwardSensor(sensors, sensornumber, motors, motornumber, bestNetwork);
+    t++;
+    if (t > maxTime)
+    {
+      useBestNetwork = false;
+      t = 0;
+      cout << endl << "Are now using network " << curNetID << " from generation " << generation << endl;
+      resetRobot = 1;
+    }
+  }
+
+  if (t < maxTime && !endOfSim && (!useBestNetwork || !takingVideo)) {    
     // let simulation run
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
     
@@ -132,9 +151,9 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     //at end of generation
     else if (generation < numberOfGenerations){
       cout << "Generation " << generation << " completed." << endl;
-
+      useBestNetwork = true;
        
-      startNextGen();   // breed new generation of networks
+      startNextGen();   // breed new generation of networks        
     }
 
     // at end of run
@@ -152,7 +171,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
       cout << endl;
     }
 
-    if (!endOfSim)
+    if (!endOfSim && (!useBestNetwork || !takingVideo))
       cout << "Are now using network " << curNetID << " from generation " << generation << endl;
 
     resetRobot = 1;   // reset robot to starting position

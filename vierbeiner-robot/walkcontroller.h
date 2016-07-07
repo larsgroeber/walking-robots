@@ -67,7 +67,9 @@ protected:
 
   bool startOfSim;
   bool endOfSim;
-  bool useCustom;
+  bool useCustom;                 // use a custom network
+  bool useBestNetwork;             
+  bool takingVideo;               // if true the best network of each generation will be used at the end of each generation for video taking purposes
 
   //// Neural Network ////
   int inputSize = 0 + 2;          // number of input nodes
@@ -75,7 +77,7 @@ protected:
   int numberOfNeurons = 2;      
   int maxTime = 500;              // max time each network has (in sim-steps)
   
-  int numberOfNetworks = 50;      // number of networks to be used per generation
+  int numberOfNetworks = 10;      // number of networks to be used per generation
   int generation = 1;             // current generation
   int curNetID = 0;               // current network ID
   double penalty;
