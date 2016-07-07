@@ -30,7 +30,7 @@ WalkController::WalkController()
   highestFitness = 0;
   penalty = 0;
   useBestNetwork = false;
-  takingVideo = false;
+  takingVideo = true;
 
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
@@ -127,7 +127,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     }
   }
 
-  if (t < maxTime && !endOfSim && (!useBestNetwork || !takingVideo)) {    
+  else if (t < maxTime && !endOfSim) {    
     // let simulation run
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
     
@@ -219,6 +219,7 @@ void WalkController::startNextGen() {
   // first calculate sum of all fitnesses and get highest Fitness
   double totalFitness = 0;
   double thisHighestFitness = 0;
+  double thisAverageFitness = 0;
   for (unsigned int i = 0; i < networkList.size(); ++i) {
     double thisFitness = networkList[i]->getFitness();
     
@@ -231,9 +232,10 @@ void WalkController::startNextGen() {
     totalFitness += networkList[i]->getFitness();
   }
 
-  ofFile << generation << "  " << thisHighestFitness << "  " << totalFitness << endl;
+  thisAverageFitness = totalFitness/(double)numberOfNetworks;
+  ofFile << generation << "  " << thisHighestFitness << "  " << thisAverageFitness << endl;
 
-  cout << "Generation " << generation << " hat an average fitness of " << totalFitness/numberOfNetworks << endl;
+  cout << "Generation " << generation << " hat an average fitness of " << thisAverageFitness << endl;
   cout << "And a highest fitness of " << thisHighestFitness << endl << endl;
 
   // Breed two networks to new one using fitness as probability
