@@ -141,6 +141,11 @@ public:
     double getFitness() {
         return fitness;
     }
+    
+    bool operator<(Neural_Custom const & a, Neural_Custom const & b)
+    {
+        return a.getFitness() < b.getFitness();
+    }
 
     /**
      * Breed a new network with another network and initialize it (has the same topology)
