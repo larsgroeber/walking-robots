@@ -104,7 +104,6 @@ public:
         for (int i = 0; i < outputWeights.n_rows; ++i) 
             for (int j = 0; j < outputWeights.n_cols; ++j) 
                 outputWeights(i,j) = ((double)rand() / INT_MAX) < 1 - chanceOfZero ? 2*(double)rand() / INT_MAX * randomWeightsRange -randomWeightsRange : 0;
-        inputWeights.print();
     }
 
     /**

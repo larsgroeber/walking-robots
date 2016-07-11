@@ -30,7 +30,7 @@ WalkController::WalkController()
   highestFitness = 0;
   penalty = 0;
   useBestNetwork = false;
-  takingVideo = false;
+  takingVideo = true;
 
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
@@ -71,8 +71,9 @@ WalkController::WalkController()
 void WalkController::init(int sensornumber, int motornumber, RandGen* randGen){
   number_sensors=sensornumber;
   number_motors=motornumber;
-  if(motornumber < 12) {
-    cerr << "Walkcontroller needs 12 motors!" << endl;
+  if(motornumber < 9) {
+    cout << sensornumber << " " << motornumber << endl;
+    cerr << "Walkcontroller needs 9 motors!" << endl;
     exit(1);
   }  
 };
