@@ -30,8 +30,6 @@ namespace lpzrobots {
 
     // choose color here a pastel white is used
     this->osgHandle.color = Color(1.0, 1,1,1);
-    //    this->osgHandle.color = Color(1.0, 156/255.0, 156/255.0, 1.0f);
-    //    addParameter("elast", &conf.elasticity);
 
     legmass=conf.mass * conf.relLegmass / conf.legNumber;    // mass of each legs
 
@@ -51,7 +49,7 @@ namespace lpzrobots {
 
 
   int VierBeiner::getMotorNumberIntern(){
-    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size();   
+    return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size();
   };
 
   /* sets actual motorcommands
@@ -80,19 +78,11 @@ namespace lpzrobots {
       n++;
     }
     assert(min(motornumber, getMotorNumberIntern())==n);
-    /// set knee servos to set point 0 (spring emulation)
-//     FOREACH(vector <HingeServo*>, kneeservos, s){
-//       (*s)->set(0);
-//     }
-    /// set ankle servos to set point 0 (spring emulation)
-    //    FOREACH(vector <HingeServo*>, ankleservos, s){
-    //      (*s)->set(0);
-    //    }
   };
 
   int VierBeiner::getSensorNumberIntern(){
     return headtailservos.size() + hipservos.size() + kneeservos.size() + ankleservos.size() + 3; // 3 Position sensors
-  };                                                                                            
+  };
 
   /* returns actual sensorvalues
       @param sensors sensors scaled to [-1,1] (more or less)
@@ -118,8 +108,8 @@ namespace lpzrobots {
       sensors[n]   = (*s)->get();
       n++;
     }
-      
-    // get Position of robot - Custom
+
+    // get Position of robot - Custom -
     Position position = this->getPosition();
     const double* posArray = position.toArray();
     for (int i = 0; i < 3; ++i)
@@ -127,18 +117,14 @@ namespace lpzrobots {
       sensors[n] = posArray[i];
       n++;
     }
-      
+
     assert(min(sensornumber, getSensorNumberIntern())==n);
-    
+
     return n;
   };
 
 
   void VierBeiner::placeIntern(const osg::Matrix& pose){
-    // the position of the robot is the center of the body
-    // to set the vehicle on the ground when the z component of the position is 0
-    //    Matrix p2;
-    //    p2 = pose * TRANSM(Vec3(0, 0, conf.legLength + conf.legLength/8));
     create(pose);
   };
 
@@ -164,7 +150,7 @@ namespace lpzrobots {
       like space-internal collision detection, sensor resets/update etc.
       @param global structure that contains global data from the simulation environment
   */
-  void VierBeiner::doInternalStuff(GlobalData& global){    
+  void VierBeiner::doInternalStuff(GlobalData& global){
   }
 
   /** creates vehicle at desired position

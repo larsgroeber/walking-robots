@@ -10,7 +10,9 @@
 using namespace std;
 using namespace arma;
 
-
+/**
+ * here we initialize everything at the start of the run
+ */
 WalkController::WalkController()
   : AbstractController("walkcontroller", "$Id$"){
   t=0;
@@ -25,6 +27,7 @@ WalkController::WalkController()
   number_sensors=0;
   number_motors=0;
 
+  // initialize stuff
   startOfSim = true;
   endOfSim = false;
   highestFitness = 0;
@@ -32,9 +35,9 @@ WalkController::WalkController()
   useBestNetwork = false;
   takingVideo = false;
 
+  // output files
   fitnessFile = "fitness";
   ofFile.open(fitnessFile);
-  
   motorFile.open("motorOutput");
 
   srand(time(NULL));
@@ -45,39 +48,49 @@ WalkController::WalkController()
     networkList.push_back(new Neural_Custom);
     networkList[i]->initNetwork(inputSize,outputSize,numberOfNeurons);
     networkList[i]->initWeightsRandom();
-  }  
+  }
   generationList.push_back(networkList);
+  //// Network End ////
 
-  
+  // use a custom network
   useCustom = false;
   if (useCustom) {  // use higher powerfactor
     t = maxTime;
     generation = numberOfGenerations;
-    
+
     mat inputW = { { -3.1385,21.8814},
                    { 0,  -0.3185} };
-                   
+
     mat outputW = { {8.9953,  -65.6696,   55.4174,   -0.7012,   -2.8553,   -2.9402,    1.2224,  0,   -1.5797,    2.2100},
                     {-0.6922,    5.5808,    0.0003,   15.7358,    1.1298,   -4.7488,    1.9581, 4.0304,    4.4995,    0.0092}};
-    
+
     bestNetwork = new Neural_Custom;
-    bestNetwork->initNetwork(inputSize,outputSize,numberOfNeurons);    
+    bestNetwork->initNetwork(inputSize,outputSize,numberOfNeurons);
     bestNetwork->setWeights(inputW,outputW);
     startOfSim = false;
     endOfSim = true;
   }
 };
 
+/**
+ * set simulation related variables
+ * @param sensornumber total number of sensors
+ * @param motornumber  total number of motors
+ */
 void WalkController::init(int sensornumber, int motornumber, RandGen* randGen){
   number_sensors=sensornumber;
   number_motors=motornumber;
   if(motornumber < 12) {
     cerr << "Walkcontroller needs 12 motors!" << endl;
     exit(1);
-  }  
+  }
 };
 
-
+/**
+ * runs at each step and does all the coordination about what should happen next
+ * @param sensors      sensor-object containing all sensor-values
+ * @param motors       motor-object containing all motor-values
+ */
 void WalkController::step(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber) {
   /** sensors/motors: 0: neck, 1: tail
@@ -86,10 +99,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
                      10,11   : ankle rh, lh
    */
 
-  // get starting position
   assert(sensornumber == 12+3);
-
-
 
   if (startOfSim) {
     cout << "Starting simulation." << endl;
@@ -97,7 +107,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     startOfSim = false;
   }
 
-
+  // get starting position
   if (t==2) // wait two steps to get a good value
     for (int i = 0; i < 3; ++i) {
       startPos[i] = sensors[12+i];
@@ -114,7 +124,7 @@ void WalkController::step(const sensor* sensors, int sensornumber,
   if (useBestNetwork && takingVideo) {
     if (t == 0)
       cout << "Using now bestNetwork! " << bestNetwork->getFitness() << endl;
-    
+
     resetRobot = 0;
     forwardSensor(sensors, sensornumber, motors, motornumber, bestNetwork);
     t++;
@@ -127,70 +137,75 @@ void WalkController::step(const sensor* sensors, int sensornumber,
     }
   }
 
-  else if (t < maxTime && !endOfSim) {    
+  else if (t < maxTime && !endOfSim) {
     // let simulation run
     forwardSensor(sensors, sensornumber, motors, motornumber, curNet);
-    
+
     // calculate current fitness of the network
     curNet->setFitness(t > 2 ? max(curNet->getFitness(), calFitness(posArray)) : 0);
 
     resetRobot = 0;
 
     // step time forward
-    endOfStep();  
+    endOfStep();
   }
 
   // at end of evaluation time
-  else if (!endOfSim) { 
+  else if (!endOfSim) {
     cout << "Network " << curNetID << " got a fitness of " << curNet->getFitness() << endl;
-    if (curNetID < numberOfNetworks - 1) {  
 
-      startOfNewNet();       // move to next network        
+    if (curNetID < numberOfNetworks - 1) {
+      startOfNewNet();  // move to next network
     }
 
     //at end of generation
     else if (generation < numberOfGenerations){
       cout << "Generation " << generation << " completed." << endl;
       useBestNetwork = true;
-       
-      startNextGen();   // breed new generation of networks        
+
+      startNextGen();   // breed new generation of networks
     }
 
     // at end of run
-    else { 
-      startNextGen();     
+    else {
+      startNextGen();
+
       cout << "Finished last generation!" << endl;
-      cout << "Using now best network with fitness " << highestFitness << endl;      
+      cout << "Using now best network with fitness " << highestFitness << endl;
       endOfSim = true;
 
       cout << "Best inputWeights:" << endl;
-      bestNetwork->inputWeights.print();  
-      cout << endl; 
-      cout << "Best outputWeights:" << endl;   
+      bestNetwork->inputWeights.print();
+      cout << endl;
+      cout << "Best outputWeights:" << endl;
       bestNetwork->outputWeights.print();
       cout << endl;
     }
 
+    // just to get the message not when run ends
     if (!endOfSim && (!useBestNetwork || !takingVideo))
       cout << "Are now using network " << curNetID << " from generation " << generation << endl;
 
     resetRobot = 1;   // reset robot to starting position
-    t = 0;
   }
 
   // if endOfSim == true
   else {
     forwardSensor(sensors, sensornumber, motors, motornumber, bestNetwork);
     resetRobot = 0;
-    endOfStep(); 
-  }  
+    endOfStep();
+  }
 };
 
-
+/**
+ * calculate the fitness of the current network
+ * @param: posNow   array holding the current position of the robot
+ * @return: the current fitness
+ */
 double WalkController::calFitness(double posNow[3]) {
   double distanceNow = 0.;
   double currentSpeed = 0.;
-  
+
   int penStepSize = 5;
 
   // calculate current distance
@@ -213,7 +228,11 @@ double WalkController::calFitness(double posNow[3]) {
   return exp((double)distanceNow) - 1;
 }
 
+/**
+ * start a new generation and breed new networks
+ */
 void WalkController::startNextGen() {
+  // clean nextNetworkList from networks of last generation
   nextNetworkList.erase(nextNetworkList.begin(), nextNetworkList.end());
 
   // first calculate sum of all fitnesses and get highest Fitness
@@ -222,17 +241,18 @@ void WalkController::startNextGen() {
   double thisAverageFitness = 0;
   for (unsigned int i = 0; i < networkList.size(); ++i) {
     double thisFitness = networkList[i]->getFitness();
-    
+
     if (highestFitness < thisFitness) {
       highestFitness = thisFitness;
       bestNetwork = networkList[i];
     }
-    
+
     thisHighestFitness = max(thisFitness, thisHighestFitness);
     totalFitness += networkList[i]->getFitness();
   }
 
   thisAverageFitness = totalFitness/(double)numberOfNetworks;
+  // print data into file
   ofFile << generation << "  " << thisHighestFitness << "  " << thisAverageFitness << endl;
 
   cout << "Generation " << generation << " hat an average fitness of " << thisAverageFitness << endl;
@@ -241,8 +261,8 @@ void WalkController::startNextGen() {
   // Breed two networks to new one using fitness as probability
   for (int i = 0; i < numberOfNetworks; ++i) {
 
-      double randn1 = (double)rand() / INT_MAX;
-      double randn2 = (double)rand() / INT_MAX;
+      double randn1 = (double)rand() / RAND_MAX;
+      double randn2 = (double)rand() / RAND_MAX;
 
       double a = 0;
       int first = 0;      // first network to breed with
@@ -252,8 +272,6 @@ void WalkController::startNextGen() {
       {
           a += networkList[j]->getFitness() / totalFitness;
 
-          //std::cout << a << std::endl;
-
           first = (a > randn1 && first == 0) ? j : first;
           second = (a > randn2 && second == 0) ? j : second;
 
@@ -261,8 +279,6 @@ void WalkController::startNextGen() {
           if (first == second && first != 0 && second != 0)
               continue;
       }
-      
-      //std::cout << first << ", " << second << std::endl;
 
       nextNetworkList.push_back(networkList[first]->breed(networkList[second]));
   }
@@ -273,9 +289,10 @@ void WalkController::startNextGen() {
 
   generationList.push_back(nextNetworkList);
 
+  //// Output to file ////
   // now run bestNetwork again but write output values in file
   if (bestNetwork != lastBestNetwork)
-  {    
+  {
     ofstream bestmotorOutput;
     bestmotorOutput.open("./motorData/motorOutput"+to_string(generation));
 
@@ -283,7 +300,7 @@ void WalkController::startNextGen() {
     {
       input(0,0) = sin(i/speed) * sinMod;
       input(0,1) = sin(i/speed + (M_PI/2)) * sinMod;
-      
+
       output = bestNetwork->forward(input);
 
       bestmotorOutput << i << "\t";
@@ -296,38 +313,36 @@ void WalkController::startNextGen() {
     bestmotorOutput.close();
     lastBestNetwork = bestNetwork;
   }
+  //// End output to file ////
 
-  
   generation++;
   curNetID = 0;
 }
 
+/**
+ * calculate motorvalues form input using the neural network given
+ * @param neural       neural network to work with
+ */
 void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
                           motor* motors, int motornumber, Neural_Custom* neural) {
   motors[0] = 0;
   motors[1] = 0;
 
   //stepNoLearning(sensors, sensornumber, motors, motornumber);
-  
 
-  // for (int i = 0; i < inputSize; ++i)
-  // {
-  //   input(0,i) = sensors[i+2];
-  // }
   input(0,0) = sin(t/speed) * sinMod;
   input(0,1) = sin(t/speed + (M_PI/2)) * sinMod;
   // input(0,2) = sin(t/speed + (M_PI)) * sinMod;     // zwei Inputs erscheinen besser
   // input(0,3) = sin(t/speed + (3*M_PI/2)) * sinMod;
 
   output = neural->forward(input);
-  //output.print();
 
   for (int i = 0; i < outputSize; ++i)
   {
     motors[i+2] = 2 * output(0,i) - 1;
   }
-  //output.print();
- 
+
+ // option to write all motor-values into file
  /*motorFile << t << "\t";
  for (int i = 0; i < outputSize; ++i)
  {
@@ -336,25 +351,35 @@ void WalkController::forwardSensor(const sensor* sensors, int sensornumber,
  motorFile << endl;*/
 };
 
+/**
+ * reset all variables for the next network
+ */
 void WalkController::startOfNewNet() {
   t = 0;
-  penalty = 0; 
+  penalty = 0;
   averageSpeed = 0;
   totalSpeed = 0;
 
-  
+  // move to next network
   curNetID++;
 }
 
+/**
+ * change variables at the end of each time-step
+ */
 void WalkController::endOfStep () {
   t++;
   totalTime++;
 }
 
+/**
+ * only here for compatibility reasons
+ */
 void WalkController::stepNoLearning(const sensor* sensors, int number_sensors,
-                                    motor* motors, int number_motors) {  
-  
-  /*double w = t/speed;
+                                    motor* motors, int number_motors) {
+
+  // the old definition
+  //double w = t/speed;
   // Horse Walk from wikipedia
   /* The walk is a four-beat gait that averages about 4 mph.
      When walking, a horse's legs follow this sequence:
@@ -389,8 +414,4 @@ void WalkController::stepNoLearning(const sensor* sensors, int number_sensors,
   for(int i=12; i<number_motors; i++){
     motors[i]=sin(phases[i%4])*0.77;
   }*/
- 
-
-  
-
 };
