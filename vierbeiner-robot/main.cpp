@@ -96,7 +96,7 @@ public:
     OdeHandle doghandle = odeHandle;
     doghandle.substance.toRubber(10);
     dog = new VierBeiner(doghandle, osgHandle,conf, "Dog");
-    dog->place(osg::Matrix::translate(0,0,.5 + 4*i));
+    dog->place(osg::Matrix::translate(0,0,.5));
     global.configs.push_back(dog);
 
     Primitive* trunk = dog->getMainPrimitive();
