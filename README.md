@@ -1,11 +1,9 @@
-# custom-robots
+# walking-robots
 
-Robot-project for the course [Self-Organization: Theory and Simulations](http://itp.uni-frankfurt.de/~gros/Vorlesungen/SO/) at the Goethe University in Frankfurt aiming to teach a robot how to walk.
+Robot-project for the course [Self-Organization: Theory and Simulations](http://itp.uni-frankfurt.de/~gros/Vorlesungen/SO/) at the Goethe University in Frankfurt aiming to teach a robot to walk using a single layered neural network, artificial evolution and supervised learning.
+
+For more information visit [the projects website](http://itp.uni-frankfurt.de/~gros/StudentProjects/Robots_2016_WalkingRobot/index.html).
 
 This project uses the [LpzRobots-Package](http://robot.informatik.uni-leipzig.de/software/).
 
-Some Sources:
- * https://www.youtube.com/watch?v=bxe2T-V8XRs (Videoseries to neural networks)
- * https://www.youtube.com/watch?v=6l6b78Y4V7Y (Filmed course about genetic algorithms)
- * https://www.youtube.com/watch?v=yci5FuI1ovk (Using a neural network to teach a robot to walk)
- * https://www.youtube.com/watch?v=qv6UVOQ0F44 (neural network that plays super mario bros)
+The code is released under the [MIT-License](https://github.com/Larsg7/walking-robots/blob/master/LICENSE).
