@@ -2,7 +2,7 @@
 
 Robot-project for the course [Self-Organization: Theory and Simulations](http://itp.uni-frankfurt.de/~gros/Vorlesungen/SO/) at the Goethe University in Frankfurt aiming to teach a robot to walk using a single layered neural network, artificial evolution and supervised learning.
 
-![gif showing the robot in action](https://www.larsgroeber.com/toKeep/walking-robot1.gif)
+![small gif showing the robot in action](https://www.larsgroeber.com/toKeep/walking-robot1.gif)
 
 For more information visit [the projects website](http://itp.uni-frankfurt.de/~gros/StudentProjects/Robots_2016_WalkingRobot/index.html).
 
